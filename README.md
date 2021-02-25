@@ -1,4 +1,4 @@
-# MiniProject-SmartLight
+# MiniProject-SmartLight (this project is not done yet)
 Mini project: Next generation network technology laboratory
 
 Equipment
