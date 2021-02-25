@@ -3,10 +3,19 @@ import time
 import RPi.GPIO as GPIO
 import datetime
 from time import ctime
+from pymongo import MongoClient
+
+# Setup 
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 r = sr.Recognizer()
+
+# Setup Database
+
+#connection = MongoClient() # Connection with MongoClient port 27017
+#db = connection.test_time # Create database test_time
+
 
 pinList = [17, 27, 22, 23]
 
@@ -45,8 +54,6 @@ def respond(voice_data):
 # Function control lgiht on
 
 def lightOnCm(): 
-    for i in pinList:
-        GPIO.setup(i, GPIO.OUT)
     try:
       GPIO.output(17, GPIO.HIGH)
       GPIO.output(27, GPIO.HIGH)
@@ -64,8 +71,6 @@ def lightOnCm():
 # Function control light off
 
 def lightOffCm(): 
-    for i in pinList:
-        GPIO.setup(i, GPIO.OUT)
     try:
       GPIO.output(17, GPIO.LOW)
       GPIO.output(27, GPIO.LOW)
@@ -102,3 +107,4 @@ while True:
     print(voice_data)
     respond(voice_data)
     setTime()
+
