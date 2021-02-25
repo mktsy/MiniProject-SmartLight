@@ -3,6 +3,8 @@ Mini project: Next generation network technology laboratory
 
 control light with voice command, Web application and Mobile application
 
+Most code installed at raspberry pi, I will update later
+
 # Feature
 can control on-off light with voice command, web & mobile application
 
