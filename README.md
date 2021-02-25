@@ -8,11 +8,13 @@ can change color of light
 can set time on-off
 can calculate electricity bill
 
-Equipment
-  - Raspberry pi 4 model B RAM 4 GB
+# Equipment
+  - Raspberry pi 4 model B RAM 4 GB (raspberry pi OS)
   - Raspberry pi charger
   - relay 4 port
   - Jumper cable
   - Light bulb
 
+# Sheet
 Folder relay for test your relay 4 channel
+Folder pymongo for test connection of mongodb and raspberry pi
