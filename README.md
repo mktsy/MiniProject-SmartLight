@@ -19,7 +19,8 @@ can calculate electricity bill
   - Raspberry pi charger
   - relay 4-8 port
   - Jumper cable
-  - Light bulb
+  - LED High power
+  - Switching power supply 5v 5a
 
 # Sheet
 Folder relay for test your relay 4 channel
