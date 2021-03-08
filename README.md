@@ -1,4 +1,4 @@
-# MiniProject-SmartLight (this project is not done yet)
+# MiniProject-SmartLight (the project is in progress)
 Mini project: Next generation network technology laboratory
 
 control light with voice command, Web application and Mobile application
