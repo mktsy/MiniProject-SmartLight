@@ -9,7 +9,7 @@ from pymongo import MongoClient
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-r = sr.Recognizer()
+r = sr.Recognizer() # import recognizer
 
 # Setup Database
 
@@ -17,7 +17,11 @@ r = sr.Recognizer()
 #db = connection.test_time # Create database test_time
 
 
-pinList = [17, 27, 22, 23]
+pinList = [4, 17, 27, 22, 23, 24, 25, 8]
+# GPIO 17, 24 = RED
+# GPIO 27, 25 = GREEN
+# GPIO 22, 5 = BLUE
+# GPIO 23, 6 = WHITE
 
 for i in pinList:
     GPIO.setup(i, GPIO.OUT)
@@ -44,6 +48,10 @@ def respond(voice_data):
         lightOnCm()
     if 'light off' in voice_data:
         lightOffCm()
+    if 'frontyard' in voice_data:
+        controlLightFrontyard(voice_data)
+    if 'bedroom' in voice_data:
+        controlLightBedroom(voice_data)
     if 'what is your name' in voice_data or "what's your name" in voice_data:
         print("My name is IANAR")
     if 'what time is it' in voice_data:
@@ -51,15 +59,106 @@ def respond(voice_data):
     if 'exit' in voice_data:
         exit()
 
-# Function control lgiht on
+# Function control light frontyard
 
-def lightOnCm(): 
+def controlLightFrontyard(voice_data):
+    if 'light on' in voice_data:
+        try:
+            GPIO.output(23, GPIO.HIGH)
+    
+    # End program cleanly with keyboard
+        except KeyboardInterrupt:
+            print("  Quit")
+
+    # Reset GPIO settings
+            GPIO.cleanup()
+
+    if 'red' in voice_data:
+        pinList = [27, 22, 23]
+        try:
+            GPIO.output(17, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+    if 'blue' in voice_data:
+        pinList = [17, 27, 23]
+        try:
+            GPIO.output(22, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+    if 'green' in voice_data:
+        pinList = [17, 22, 23]
+        try:
+            GPIO.output(27, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+# Function control light bedroom
+
+def controlLightBedroom(voice_data):
+    if 'light on' in voice_data:
+        try:
+            GPIO.output(6, GPIO.HIGH)
+    
+    # End program cleanly with keyboard
+        except KeyboardInterrupt:
+            print("  Quit")
+
+    # Reset GPIO settings
+            GPIO.cleanup()
+
+    if 'red' in voice_data:
+        pinList = [25, 5, 6]
+        try:
+            GPIO.output(24, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+    if 'blue' in voice_data:
+        pinList = [24, 25, 6]
+        try:
+            GPIO.output(5, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+    if 'green' in voice_data:
+        pinList = [24, 5, 6]
+        try:
+            GPIO.output(25, GPIO.HIGH)
+            for i in pinList:
+                GPIO.output(i, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            print("  Quit")
+            GPIO.cleanup()
+
+# Function control light on 
+
+def lightOnCm():
     try:
-      GPIO.output(17, GPIO.HIGH)
-      GPIO.output(27, GPIO.HIGH)
-      GPIO.output(22, GPIO.HIGH)
-      GPIO.output(23, GPIO.HIGH)
-      print ("turn on the light")
+        for i in pinList:
+            GPIO.output(i, GPIO.LOW)
+    print ("turn on the light")
       
   # End program cleanly with keyboard
     except KeyboardInterrupt:
@@ -72,11 +171,10 @@ def lightOnCm():
 
 def lightOffCm(): 
     try:
-      GPIO.output(17, GPIO.LOW)
-      GPIO.output(27, GPIO.LOW)
-      GPIO.output(22, GPIO.LOW)
-      GPIO.output(23, GPIO.LOW)
-      print ("turn off the light")
+        for i in pinList:
+            GPIO.output(i, GPIO.LOW)
+
+    print ("turn off the light")
       
   # End program cleanly with keyboard
     except KeyboardInterrupt:
@@ -84,6 +182,7 @@ def lightOffCm():
 
   # Reset GPIO settings
       GPIO.cleanup()
+
 
 # Function set on-off time
 
@@ -107,4 +206,3 @@ while True:
     print(voice_data)
     respond(voice_data)
     setTime()
-
