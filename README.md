@@ -17,7 +17,7 @@ can calculate electricity bill
 # Equipment
   - Raspberry pi 4 model B RAM 4 GB (raspberry pi OS)
   - Raspberry pi charger
-  - relay 4 port
+  - relay 4-8 port
   - Jumper cable
   - Light bulb
 
