@@ -9,7 +9,8 @@ import timeit
 from database.vault import(
         update_one_value,
         check_state,
-        check_cal_time
+        check_cal_time,
+        check_total_time
 )
 
 # Setup GPIO & speech recognition model 
@@ -154,12 +155,14 @@ def lightOffCm():
         
         for i in range(1, 7):
             start = check_cal_time(i)
+            total_time = check_total_time(i)
+            update_total_time = (timeit.default_timer() - start) + total_time
             old_value = {"lightNumber": i}
             new_value = {"$set": 
                             {"state": "0", 
                              "color": "off",
                              "endTime": datetime.datetime.now(),
-                             "totalTime": (timeit.default_timer() - start)}}
+                             "totalTime": update_total_time}}
 
             check_update_complete = 0
             check_light_state = check_state(i)

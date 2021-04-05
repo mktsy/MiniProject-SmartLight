@@ -32,4 +32,10 @@ def check_cal_time(light_number):
     load_value = json.loads(convert_value)
     return load_value["calTime_start"]
 
+def check_total_time(light_number):
+    value = collection.find_one({"lightNumber": light_number}, {"_id": 0, "startTime": 0, "endTime": 0})
+    convert_value = json.dumps(value)
+    load_value = json.loads(convert_value)
+    return load_value["totalTime"]
+
 
