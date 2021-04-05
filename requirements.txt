@@ -3,5 +3,4 @@ pyaudio
 gTTS
 RPi.GPIO
 pymongo
-python-decouple==3.3
 dnspython
