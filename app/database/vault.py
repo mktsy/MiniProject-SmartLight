@@ -1,8 +1,13 @@
 import pymongo
 import asyncio
 import json
+from decouple import config
 
-client = pymongo.MongoClient("mongodb+srv://mktsy:makiitheslayer@cluster0.hg6xy.mongodb.net/LightDatabase?retryWrites=true&w=majority")
+#client = pymongo.MongoClient("mongodb+srv://mktsy:makiitheslayer@cluster0.hg6xy.mongodb.net/LightDatabase?retryWrites=true&w=majority")
+
+MONGO_DETAILS = config('MONGO_DETAILS')
+
+client = pymongo.MongoClient(MONGO_DETAILS)
 
 db = client.testDB
 
