@@ -8,6 +8,7 @@ import timeit
 from database.vault import(
         update_one_value,
         check_state,
+        check_color,
         check_cal_time,
         check_total_time
 )
@@ -18,13 +19,17 @@ pinList = [4, 17, 27, 22, 10, 9, 11, 0, 5, 6, 13, 19, 26, 21, 20, 16, 12, 1, 7, 
 
 # Function control light on
 
+def offLight():
+    for i in pinList:
+        GPIO.output(i, GPIO.LOW)
+
 def lightOnCm():
-    pinList = [4, 17, 27, 23, 24, 25]
     try:
-        for i in pinList:
-            GPIO.output(i, GPIO.LOW)
-        GPIO.output(22, GPIO.HIGH)
-        GPIO.output(8, GPIO.HIGH)
+        offLight()
+        pinList_white = [11, 0, 20, 16, 23, 18]
+
+        for i in pinList_white:
+            GPIO.output(i, GPIO.HIGH)
 
         for i in range(1, 7):
             old_value = {"lightNumber": i}
@@ -41,7 +46,6 @@ def lightOnCm():
             if(i == 6 and check_update == 1):
                 print("Database updated.")
 
-
         print("Output: turn on the light")
       
   # End program cleanly with keyboard
@@ -54,12 +58,13 @@ def lightOnCm():
 # Function change all red color of light
 
 def changeColorRed():
-    pinList = [17, 27, 22, 24, 25, 8]
     try:
-        for i in pinList:
-            GPIO.output(i, GPIO.LOW)
-        GPIO.output(4, GPIO.HIGH) 
-        GPIO.output(23, GPIO.HIGH) 
+        offLight()
+        pinList_red = [4, 17, 5, 6, 12, 1]
+        
+        for i in pinList_red:
+            GPIO.output(i, GPIO.HIGH)
+
         print("Output: Change color Red")
     except KeyboardInterrupt:
         print("  Quit")

@@ -19,8 +19,12 @@ def check_state(light_number):
     load_value = json.loads(convert_value)
     return load_value["state"]
 
+
 def check_color(light_number):
-    pass
+    value = collection.find_one({"lightNumber": light_number}, {"_id": 0, "startTime": 0, "endTime": 0})
+    convert_value = json.dumps(value)
+    load_value = json.loads(convert_value)
+    return load_value["color"]
 
 
 async def update_one_value(old_value, new_value):
