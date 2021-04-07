@@ -15,7 +15,7 @@ from database.vault import(
 
 
 pinList = [4, 17, 27, 22, 10, 9, 11, 0, 5, 6, 13, 19, 26, 21, 20, 16, 12, 1, 7, 8, 25, 24, 23, 18]
-
+light_number = [1, 2, 3, 4, 5, 6]
 
 # Function control light on
 
@@ -31,7 +31,7 @@ def lightOnCm():
         for i in pinList_white:
             GPIO.output(i, GPIO.HIGH)
 
-        for i in range(1, 7):
+        for i in light_number:
             old_value = {"lightNumber": i}
             new_value = {"$set": 
                     {"state": "1", 
@@ -61,11 +61,27 @@ def changeColorRed():
     try:
         offLight()
         pinList_red = [4, 17, 5, 6, 12, 1]
+        check_light_state = 1
         
-        for i in pinList_red:
-            GPIO.output(i, GPIO.HIGH)
+        for i in light_number:
+            if(check_state(i) != '1'):
+                check_light_state = 0
 
-        print("Output: Change color Red")
+
+        if(check_light_state == 1):
+            for i in pinList_red:
+                GPIO.output(i, GPIO.HIGH)
+
+            for i in light_number:
+                old_value = {"lightNumber": i}
+                new_value = {"$set": {"color": "red"}}
+                asyncio.run(update_one_value(old_value, new_value))
+
+            print("Output: Change color Red")
+        else:
+            print("Output: Light is still off")
+
+    
     except KeyboardInterrupt:
         print("  Quit")
         GPIO.cleanup()
@@ -73,13 +89,28 @@ def changeColorRed():
 # Function change all green color of light
 
 def changeColorGreen():
-    pinList = [4, 27, 22, 23, 25, 8]
     try:
-        for i in pinList:
-            GPIO.output(i, GPIO.LOW)
-        GPIO.output(17, GPIO.HIGH) 
-        GPIO.output(24, GPIO.HIGH)
-        print("Output: Change color Green")
+        offLight()
+        pinList_green = [27, 22, 13, 19, 7, 8]
+        check_light_state = 1
+
+        for i in light_number:
+            if(check_state(i) != '1'):
+                check_light_state = 0
+        
+        if(check_light_state == 1):
+            for i in pinList_green:
+                GPIO.output(i, GPIO.HIGH)
+
+            for i in light_number:
+                old_value = {"lightNumber": i}
+                new_value = {"$set": {"color": "green"}}
+                asyncio.run(update_one_value(old_value, new_value))
+
+            print("Output: Change color Green")
+        else:
+            print("Output: Light is still off")
+
     except KeyboardInterrupt:
         print("  Quit")
         GPIO.cleanup()
@@ -87,13 +118,28 @@ def changeColorGreen():
 # Function change all blue color of light
 
 def changeColorBlue():
-    pinlist = [4, 17, 22, 23, 24, 8]
     try:
-        for i in pinList:
-            GPIO.output(i, GPIO.LOW)
-        GPIO.output(27, GPIO.HIGH)
-        GPIO.output(25, GPIO.HIGH)
-        print("Output: Change color Blue")
+        offLight()
+        pinList_blue = [10, 9, 26, 21, 25, 24]
+        check_light_state = 1
+        
+        for i in light_number:
+            if(check_state(i) != '1'):
+                check_light_state = 0
+
+        if(check_light_state == 1):
+            for i in pinList_blue:
+                GPIO.output(i, GPIO.HIGH)
+
+            for i in light_number:
+                old_value = {"lightNumber": i}
+                new_value = {"$set": {"color": "blue"}}
+                asyncio.run(update_one_value(old_value, new_value))
+
+            print("Output: Change color Blue")
+        else:
+            print("Output: Light is still off")
+    
     except KeyboardInterrupt:
         print("  Quit")
         GPIO.cleanup()
@@ -106,7 +152,7 @@ def lightOffCm():
         for i in pinList:
             GPIO.output(i, GPIO.LOW)
         
-        for i in range(1, 7):
+        for i in light_number:
             start = check_cal_time(i)
             total_time = check_total_time(i)
             update_total_time = (timeit.default_timer() - start) + total_time
