@@ -7,14 +7,32 @@ from command_function import(
     changeAllColorRed,
     changeAllColorGreen,
     changeAllColorBlue,
-    allLightOff
+    allLightOff,
+    ControlLight
     
 )
-# Setup GPIO & speech recognition model 
+# Setup speech recognition model 
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
 r = sr.Recognizer()
+
+pinList_front = [4, 17, 27, 22] # red, green, blue, white 
+front_light = ControlLight("Front", 1, pinList_front)# (name, light_number, GPIO)
+
+pinList_living_room = [10, 9, 11, 0]
+living_room_light = ControlLight("Living room", 2, pinList_living_room)
+
+pinList_bedroom = [5, 6, 13, 19]
+bedroom_light = ControlLight("Bedroom", 3, pinList_bedroom)
+
+pinList_kitchen = [26, 21, 20, 16]
+kitchen_light = ControlLight("Kitchen", 4, pinList_kitchen)
+
+pinList_toilet = [12, 1, 7, 8]
+toilet_light = ControlLight("Toilet", 5, pinList_toilet)
+
+pinList_backyard = [25, 24, 23, 18]
+backyard_light = ControlLight("Backyard", 6, pinList_backyard)
+
 
 
 # Function input voice data
@@ -36,19 +54,82 @@ def recordAudio():
 def respond(voice_data):
     if 'turn on the light' in voice_data:
         allLightOn()
-    if 'turn off the light' in voice_data:
-        allLightOff()
-    if 'red' in voice_data:
+    elif 'change color red' in voice_data:
         changeAllColorRed()
-    if 'green' in voice_data:
+    elif 'change color green' in voice_data:
         changeAllColorGreen()
-    if 'blue' in voice_data:
+    elif 'change color blue' in voice_data:
         changeAllColorBlue()
-    if 'what is your name' in voice_data or "what's your name" in voice_data:
-        print("My name is IANAR")
-    if 'what time is it' in voice_data:
-        print(ctime())
-    if 'exit' in voice_data:
+    elif 'turn off the light' in voice_data:
+        allLightOff()
+
+    elif 'front light on' in voice_data:
+        front_light.lightOn()
+    elif 'front light red' in voice_data:
+        front_light.changeColorRed()
+    elif 'front light green' in voice_data:
+        front_light.changeColorGreen()
+    elif 'front light blue' in voice_data:
+        front_light.changeColorBlue()
+    elif 'front light off' in voice_data:
+        front_light.lightOff()
+
+    elif 'living room on' in voice_data:
+        living_room_light.lightOn()
+    elif 'living room red' in voice_data:
+        living_room_light.changeColorRed()
+    elif 'living room green' in voice_data:
+        livingroom_light.changeColorGreen()
+    elif 'living room blue' in voice_data:
+        livingroom_light.changeColorBlue()
+    elif 'living room off' in voice_data:
+        livingroom_light.lightOff()
+    
+    elif 'bedroom on' in voice_data:
+        bedroom_light.lightOn()
+    elif 'bedroom red' in voice_data:
+        bedroom_light.changeColorRed()
+    elif 'bedroom green' in voice_data:
+        bedroom_light.changeColorGreen()
+    elif 'bedroom blue' in voice_data:
+        bedroom_light.changeColorBlue()
+    elif 'bedroom off' in voice_data:
+        bedroom_light.lightOff()
+    
+    elif 'kitchen on' in voice_data:
+        kitchen_light.lightOn()
+    elif 'kitchen red' in voice_data:
+        kitchen_light.changeColorRed()
+    elif 'kitchen green' in voice_data:
+        kitchen_light.changeColorGreen()
+    elif 'kitchen blue' in voice_data:
+        kitchen_light.changeColorBlue()
+    elif 'kitchen off' in voice_data:
+        kitchen_light.lightOff()
+    
+    elif 'toilet on' in voice_data:
+        toilet_light.lightOn()
+    elif 'toilet red' in voice_data:
+        toilet_light.changeColorRed()
+    elif 'toilet green' in voice_data:
+        toilet_light.changeColorGreen()
+    elif 'toilet blue' in voice_data:
+        toilet_light.changeColorBlue()
+    elif 'toilet off' in voice_data:
+        toilet_light.lightOff()
+
+    elif 'backyard on' in voice_data:
+        backyard_light.lightOn()
+    elif 'backyard red' in voice_data:
+        backyard_light.changeColorRed()
+    elif 'backyard green' in voice_data:
+        backyard_light.changeColorGreen()
+    elif 'backyard blue' in voice_data:
+        backyard_light.changeColorBlue()
+    elif 'backyard off' in voice_data:
+        backyard_light.lightOff()
+
+    elif 'exit' in voice_data:
         exit()
 
 
@@ -72,8 +153,14 @@ def setTime():
         lightOffCm()
         
 time.sleep(1)
-        
-while True:
-    voice_data = recordAudio()
-    print("Input voice: " + voice_data)
-    respond(voice_data)
+
+try:
+    while True:
+        voice_data = recordAudio()
+        print("Input voice: " + voice_data)
+        respond(voice_data)
+        print("")
+
+# End program cleanly with keyboard
+except KeyboardInterrupt:
+    print(" Force quit...")
