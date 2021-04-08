@@ -3,11 +3,11 @@ import RPi.GPIO as GPIO
 import time
 
 from command_function import(
-    lightOnCm,
-    changeColorRed,
-    changeColorGreen,
-    changeColorBlue,
-    lightOffCm
+    allLightOn,
+    changeAllColorRed,
+    changeAllColorGreen,
+    changeAllColorBlue,
+    allLightOff
     
 )
 # Setup GPIO & speech recognition model 
@@ -17,18 +17,9 @@ GPIO.setwarnings(False)
 r = sr.Recognizer()
 
 
-pinList = [4, 17, 27, 22, 10, 9, 11, 0, 5, 6, 13, 19, 26, 21, 20, 16, 12, 1, 7, 8, 25, 24, 23, 18]
-#  4, 23 = red
-# 17, 24 = green
-# 27, 25 = blue
-# 22, 8  = white
-for i in pinList:
-    GPIO.setup(i, GPIO.OUT)
-    GPIO.output(i, GPIO.LOW)
-
 # Function input voice data
 
-def record_audio():
+def recordAudio():
     with sr.Microphone() as source:
         audio = r.listen(source)
         voice_data = ''
@@ -44,15 +35,15 @@ def record_audio():
 
 def respond(voice_data):
     if 'turn on the light' in voice_data:
-        lightOnCm()
+        allLightOn()
     if 'turn off the light' in voice_data:
-        lightOffCm()
+        allLightOff()
     if 'red' in voice_data:
-        changeColorRed()
+        changeAllColorRed()
     if 'green' in voice_data:
-        changeColorGreen()
+        changeAllColorGreen()
     if 'blue' in voice_data:
-        changeColorBlue()
+        changeAllColorBlue()
     if 'what is your name' in voice_data or "what's your name" in voice_data:
         print("My name is IANAR")
     if 'what time is it' in voice_data:
@@ -62,7 +53,7 @@ def respond(voice_data):
 
 
 
-# Function set on-off time
+# Function set on-off time (inprogress)
 
 def setTime():
     hour_on = 22
@@ -83,6 +74,6 @@ def setTime():
 time.sleep(1)
         
 while True:
-    voice_data = record_audio()
+    voice_data = recordAudio()
     print("Input voice: " + voice_data)
     respond(voice_data)
