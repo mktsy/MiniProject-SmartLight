@@ -13,6 +13,9 @@ db = client.testDB
 collection = db.vault001_for_app_collection
 
 
+def updateOneValueForAppCollection(old_value, new_value):
+    collection.update_one(old_value, new_value)
+
 def checkState(light_number):
     value = collection.find_one({"lightNumber": light_number}, {"_id": 0, "color": 0})
     convert_value = json.dumps(value)

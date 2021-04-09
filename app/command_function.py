@@ -1,15 +1,17 @@
 import time
 import RPi.GPIO as GPIO
 import datetime
-import asyncio
 import timeit
 
 from database.vault import(
-        updateOneValue,
-        checkState,
-        checkColor,
-        checkCalTime,
-        checkTotalTime
+    updateOneValue,
+    checkState,
+    checkColor,
+    checkCalTime,
+    checkTotalTime
+)
+from database.vault_for_app import(
+    updateOneValueForAppCollection
 )
 
 # set mode and close warning GPIO
@@ -41,13 +43,14 @@ class ControlLight:
                          "color": "white",
                          "startTime": datetime.datetime.now(),
                          "calTime_start": timeit.default_timer()}}
-
+        
         if(checkState(self.light_number) == '0'):
-            asyncio.run(updateOneValue(old_value, new_value))
-            print("Database updated.")
+            updateOneValue(old_value, new_value)
 
-        print("Output: " + self.name + " light on")
-        time.sleep(sleep_time)
+            new_value = {"$set": {"state": "1", "color": "white"}}
+            updateOneValueForAppCollection(old_value, new_value)
+
+        #print("Output: " + self.name + " light on")
     
     def lightOff(self):
         for i in self.pinList:
@@ -64,11 +67,12 @@ class ControlLight:
                          "totalTIme": update_total_time}}
 
         if(checkState(self.light_number) == '1'):
-            asyncio.run(updateOneValue(old_value, new_value))
-            print("Database updated.")
-
-        print("Output: " + self.name + " light off")
-        time.sleep(sleep_time)
+            updateOneValue(old_value, new_value)
+            
+            new_value = {"$set": {"state": "0", "color": "off"}}
+            updateOneValueForAppCollection(old_value, new_value)
+        
+        #print("Output: " + self.name + " light off")
 
     def changeColorRed(self):
         if(checkState(self.light_number) == '1'):
@@ -78,14 +82,13 @@ class ControlLight:
 
             old_value = {"lightNumber": self.light_number}
             new_value = {"$set": {"color": "red",}}
-            asyncio.run(updateOneValue(old_value, new_value))
-            
-            print("Database updated.")
-            print("Output: " + self.name + " light change color to red")
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollection(old_value, new_value)
 
-        else:
-            print("Output: Light is still off")
-        time.sleep(sleep_time)
+            #print("Output: " + self.name + " light change color to red")
+
+        #else:
+            #print("Output: Light is still off")
 
     def changeColorGreen(self):
         if(checkState(self.light_number) == '1'):
@@ -95,14 +98,13 @@ class ControlLight:
 
             old_value = {"lightNumber": self.light_number}
             new_value = {"$set": {"color": "green",}}
-            asyncio.run(updateOneValue(old_value, new_value))
-            
-            print("Database updated.")
-            print("Output: " + self.name + " light change color to green")
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollecion(old_value, new_value)
 
-        else:
-            print("Output: Light is still off")
-        time.sleep(sleep_time)
+            #print("Output: " + self.name + " light change color to green")
+
+        #else:
+            #print("Output: Light is still off")
 
     def changeColorBlue(self):
         if(checkState(self.light_number) == '1'):
@@ -112,14 +114,29 @@ class ControlLight:
 
             old_value = {"lightNumber": self.light_number}
             new_value = {"$set": {"color": "blue",}}
-            asyncio.run(updateOneValue(old_value, new_value))
-            
-            print("Database updated.")
-            print("Output: " + self.name + " light change color to blue")
+            old_value = {"lightNumber": self.light_number}
+            new_value = {"$set": {"color": "blue",}}
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppColleciton(old_value, new_value)
+        
+            #print("Output: " + self.name + " light change color to blue")
+        #else:
+            #print("Output: Light is still off")
 
-        else:
-            print("Output: Light is still off")
-        time.sleep(sleep_time)
+    def changeColorWhite(self):
+        if(checkState(self.light_number) == '1'):
+            for i in self.pinList:
+                GPIO.output(i, GPIO.LOW)
+            GPIO.output(self.pinList[3], GPIO.HIGH)
+
+            old_value = {"lightNumber": self.light_number}
+            new_value = {"$set": {"color": "white",}}
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollection(old_value, new_value)
+            
+            #print("Output: " + self.name + " light change color to white")
+        #else:
+            #print("Output: Light is still off")
 
 
 
@@ -147,10 +164,12 @@ def allLightOn():
     
         check_light_state = checkState(i)
         if(check_light_state == '0'):
-            asyncio.run(updateOneValue(old_value, new_value))
+            updateOneValue(old_value, new_value)
+
+            new_value = {"$set": {"state": "1", "color": "white"}}
+            updateOneValueForAppColleciton(old_value, new_value)
 
     print("Output: turn on the light")
-    time.sleep(sleep_time)
 
 
 # Function change all red color of light
@@ -172,12 +191,12 @@ def changeAllColorRed():
         for i in light_number:
             old_value = {"lightNumber": i}
             new_value = {"$set": {"color": "red"}}
-            asyncio.run(updateOneValue(old_value, new_value))
-           
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollection(old_value, new_value)
+
         print("Output: Change color Red")
     else:
         print("Output: Light is still off")
-    time.sleep(sleep_time)
 
    
 # Function change all green color of light
@@ -198,12 +217,12 @@ def changeAllColorGreen():
         for i in light_number:
             old_value = {"lightNumber": i}
             new_value = {"$set": {"color": "green"}}
-            asyncio.run(updateOneValue(old_value, new_value))
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollection(old_value, new_value)
 
         print("Output: Change color Green")
     else:
         print("Output: Light is still off")
-    time.sleep(sleep_time)
     
 
 # Function change all blue color of light
@@ -224,12 +243,12 @@ def changeAllColorBlue():
         for i in light_number:
             old_value = {"lightNumber": i}
             new_value = {"$set": {"color": "blue"}}
-            asyncio.run(updateOneValue(old_value, new_value))
+            updateOneValue(old_value, new_value)
+            updateOneValueForAppCollection(old_value, new_value)
 
         print("Output: Change color Blue")
     else:
         print("Output: Light is still off")
-    time.sleep(sleep_time)
 
 
 # Function control light off
@@ -248,11 +267,15 @@ def allLightOff():
                          "color": "off",
                          "endTime": datetime.datetime.now(),
                          "totalTime": update_total_time}}
-
+        
         check_light_state = checkState(i)
         if(check_light_state == '1'):
-            asyncio.run(updateOneValue(old_value, new_value))
-        
-    print("Output: turn off the light")
-    time.sleep(sleep_time)  
+            updateOneValue(old_value, new_value)
+
+            new_value = {"$set": {"state": "0", "color": "white"}}
+            updateOneValueForAppCollection(old_value, new_value)
+
+    print("Output: turn on the light")
+
+
 

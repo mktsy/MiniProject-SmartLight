@@ -1,5 +1,4 @@
 import pymongo
-import asyncio
 import json
 from decouple import config
 
@@ -27,7 +26,7 @@ def checkColor(light_number):
     return load_value["color"]
 
 
-async def updateOneValue(old_value, new_value):
+def updateOneValue(old_value, new_value):
     collection.update_one(old_value, new_value)
 
 
