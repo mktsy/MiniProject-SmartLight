@@ -11,6 +11,10 @@ from command_function import(
     ControlLight
     
 )
+from command_function_app import(
+    controlLightByApp
+)
+
 # Setup speech recognition model 
 
 r = sr.Recognizer()
@@ -160,6 +164,8 @@ try:
         print("Input voice: " + voice_data)
         respond(voice_data)
         print("")
+
+        controlLightByApp()
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:

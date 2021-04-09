@@ -1,7 +1,6 @@
 import time
 import RPi.GPIO as GPIO
 import datetime
-from time import ctime
 import asyncio
 import timeit
 
@@ -48,6 +47,7 @@ class ControlLight:
             print("Database updated.")
 
         print("Output: " + self.name + " light on")
+        time.sleep(sleep_time)
     
     def lightOff(self):
         for i in self.pinList:
@@ -68,6 +68,7 @@ class ControlLight:
             print("Database updated.")
 
         print("Output: " + self.name + " light off")
+        time.sleep(sleep_time)
 
     def changeColorRed(self):
         if(checkState(self.light_number) == '1'):
@@ -84,6 +85,7 @@ class ControlLight:
 
         else:
             print("Output: Light is still off")
+        time.sleep(sleep_time)
 
     def changeColorGreen(self):
         if(checkState(self.light_number) == '1'):
@@ -100,6 +102,7 @@ class ControlLight:
 
         else:
             print("Output: Light is still off")
+        time.sleep(sleep_time)
 
     def changeColorBlue(self):
         if(checkState(self.light_number) == '1'):
@@ -116,6 +119,7 @@ class ControlLight:
 
         else:
             print("Output: Light is still off")
+        time.sleep(sleep_time)
 
 
 
@@ -146,6 +150,7 @@ def allLightOn():
             asyncio.run(updateOneValue(old_value, new_value))
 
     print("Output: turn on the light")
+    time.sleep(sleep_time)
 
 
 # Function change all red color of light
@@ -172,6 +177,7 @@ def changeAllColorRed():
         print("Output: Change color Red")
     else:
         print("Output: Light is still off")
+    time.sleep(sleep_time)
 
    
 # Function change all green color of light
@@ -197,7 +203,8 @@ def changeAllColorGreen():
         print("Output: Change color Green")
     else:
         print("Output: Light is still off")
-
+    time.sleep(sleep_time)
+    
 
 # Function change all blue color of light
 
@@ -222,7 +229,8 @@ def changeAllColorBlue():
         print("Output: Change color Blue")
     else:
         print("Output: Light is still off")
-   
+    time.sleep(sleep_time)
+
 
 # Function control light off
 
@@ -246,5 +254,5 @@ def allLightOff():
             asyncio.run(updateOneValue(old_value, new_value))
         
     print("Output: turn off the light")
-  
+    time.sleep(sleep_time)  
 
