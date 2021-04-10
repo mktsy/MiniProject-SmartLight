@@ -1,12 +1,18 @@
 import time
+import datetime
 
 from database.vault_for_app import(
-        checkState,
-        checkColor,
+        checkStateApp,
+        checkColorApp,
         checkTimeOnHour,
         checkTimeOnMin,
         checkTimeOffHour,
-        checkTimeOffMin
+        checkTimeOffMin,
+        checkTimeOnState,
+        checkTimeOffState
+)
+from database.vault import(
+        checkState
 )
 from sheet.command_function import(
         ControlLight
@@ -33,97 +39,55 @@ backyard_light = ControlLight("Backyard", 6, pinList_backyard)
 
 
 # create variable for light number
-front = 1
-living_room = 2
-bedroom = 3
-kitchen = 4
-toilet = 5
-backyard = 6
+
+light_number = [1, 2, 3, 4, 5, 6]
+light_list = [front_light, living_room_light, bedroom_light, kitchen_light, toilet_light, backyard_light]
 
 
 def runControlLightByApp():
     try:
-        while True:    
-            if(checkState(front) == '1' and checkColor(front) == 'off'):
-                front_light.lightOn()
-            if(checkColor(front) == 'red'):
-                front_light.changeColorRed()
-            if(checkColor(front) == 'green'):
-                front_light.changeColorGreen()
-            if(checkColor(front) == 'blue'):
-                front_light.changeColorBlue()
-            if(checkColor(front) == 'white'):
-                front_light.changeColorWhite()
-            if(checkState(front) == '0'):
-                front_light.lightOff()
-    
-            if(checkState(living_room) == '1' and checkColor(living_room) == 'off'):
-                living_room_light.lightOn()
-            if(checkColor(living_room) == 'red'):
-                living_room_light.changeColorRed()
-            if(checkColor(living_room) == 'green'):
-                living_room_light.changeColorGreen()
-            if(checkColor(living_room) == 'blue'):
-                living_room_light.changeColorBlue()
-            if(checkColor(living_room) == 'white'):
-                living_room_light.changeColorWhite()
-            if(checkState(living_room) == '0'):
-                living_room_light.lightOff()
-
-            if(checkState(bedroom) == '1' and checkColor(bedroom) == 'off'):
-                bedroom_light.lightOn()
-            if(checkColor(bedroom) == 'red'):
-                bedroom_light.changeColorRed()
-            if(checkColor(bedroom) == 'green'):
-                bedroom_light.changeColorGreen()
-            if(checkColor(bedroom) == 'blue'):
-                bedroom_light.changeColorBlue()
-            if(checkColor(bedroom) == 'white'):
-                bedroom_light.changeColorWhite()
-            if(checkState(bedroom) == '0'):
-                bedroom_light.lightOff()
-
-            if(checkState(kitchen) == '1' and checkColor(kitchen) == 'off'):
-                kitchen_light.lightOn()
-            if(checkColor(kitchen) == 'red'):
-                kitchen_light.changeColorRed()
-            if(checkColor(kitchen) == 'green'):
-                kitchen_light.changeColorGreen()
-            if(checkColor(kitchen) == 'blue'):
-                kitchen_light.changeColorBlue()
-            if(checkColor(kitchen) == 'white'):
-                kitchen_light.changeColorWhite()
-            if(checkState(kitchen) == '0'):
-                kitchen_light.lightOff()
-
-            if(checkState(toilet) == '1' and checkColor(toilet) == 'off'):
-                toilet_light.lightOn()
-            if(checkColor(toilet) == 'red'):
-                toilet_light.changeColorRed()
-            if(checkColor(toilet) == 'green'):
-                toilet_light.changeColorGreen()
-            if(checkColor(toilet) == 'blue'):
-                toilet_light.changeColorBlue()
-            if(checkColor(toilet) == 'white'):
-                toilet_light.changeColorWhite()
-            if(checkState(toilet) == '0'):
-                toilet_light.lightOff()
-
-            if(checkState(backyard) == '1' and checkColor(backyard) == 'off'):
-                backyard_light.lightOn()
-            if(checkColor(backyard) == 'red'):
-                backyard_light.changeColorRed()
-            if(checkColor(backyard) == 'green'):
-                backyard_light.changeColorGreen()
-            if(checkColor(backyard) == 'blue'):
-                backyard_light.changeColorBlue()
-            if(checkColor(backyard) == 'white'):
-                backyard_light.changeColorWhite()
-            if(checkState(backyard) == '0'):
-                backyard_light.lightOff()
-
+        while True:
+            for i in light_number:
+                if(checkStateApp(i) == True and checkColorApp(i) == 'off'):
+                    light_list[i-1].lightOn()
+                if(checkColorApp(i) == 'red'):
+                    light_list[i-1].changeColorRed()
+                if(checkColorApp(i) == 'green'):
+                    light_list[i-1].changeColorGreen()
+                if(checkColorApp(i) == 'blue'):
+                    light_list[i-1].changeColorBlue()
+                if(checkColorApp(i) == 'white'):
+                    light_list[i-1].changeColorWhite()
+                if(checkStateApp(i) == False):
+                    light_list[i-1].lightOff()
+     
     except KeyboardInterrupt:
         print(" Force quit...")
+
+
+def runSetTime():
+    try:
+        while True:
+            for i in light_number:
+                hour_on = checkTimeOnHour(i)
+                min_on = checkTimeOnMin(i)
+                hour_off = checkTimeOffHour(i)
+                min_off = checkTimeOffMin(i)
+                time_on = [hour_on, min_on]
+                time_off = [hour_off, min_off]
+                now = datetime.datetime.now()
+                time_now = [now.hour, now.minute]
+
+                if(checkTimeOnState(i) == True):
+                    if(time_on == time_now and checkState(i) == False):
+                        light_list[i-1].lightOn()
+                if(checkTimeOffState(i) == True):
+                    if(time_off == time_now and checkState(i) == True):
+                        light_list[i-1].lightOff()
+    
+    except KeyboardInterrupt:
+        print("Force quit...")
+
 
 time.sleep(1)
 

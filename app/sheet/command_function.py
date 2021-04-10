@@ -39,15 +39,15 @@ class ControlLight:
 
         old_value = {"lightNumber": self.light_number}
         new_value = {"$set": 
-                        {"state": "1", 
+                        {"state": True, 
                          "color": "white",
                          "startTime": datetime.datetime.now(),
                          "calTime_start": timeit.default_timer()}}
         
-        if(checkState(self.light_number) == '0'):
+        if(checkState(self.light_number) == False):
             updateOneValue(old_value, new_value)
 
-            new_value = {"$set": {"state": "1", "color": "white"}}
+            new_value = {"$set": {"state": True, "color": "white"}}
             updateOneValueForAppCollection(old_value, new_value)
 
         #print("Output: " + self.name + " light on")
@@ -61,21 +61,21 @@ class ControlLight:
         update_total_time = (timeit.default_timer() - start) + total_time
         old_value = {"lightNumber": self.light_number}
         new_value = {"$set":
-                        {"state": "0",
+                        {"state": False,
                          "color": "off",
                          "endTime": datetime.datetime.now(),
-                         "totalTIme": update_total_time}}
+                         "totalTime": update_total_time}}
 
-        if(checkState(self.light_number) == '1'):
+        if(checkState(self.light_number) == True):
             updateOneValue(old_value, new_value)
             
-            new_value = {"$set": {"state": "0", "color": "off"}}
+            new_value = {"$set": {"state": False, "color": "off"}}
             updateOneValueForAppCollection(old_value, new_value)
         
         #print("Output: " + self.name + " light off")
 
     def changeColorRed(self):
-        if(checkState(self.light_number) == '1'):
+        if(checkState(self.light_number) == True):
             for i in self.pinList:
                 GPIO.output(i, GPIO.LOW)
             GPIO.output(self.pinList[0], GPIO.HIGH)
@@ -91,7 +91,7 @@ class ControlLight:
             #print("Output: Light is still off")
 
     def changeColorGreen(self):
-        if(checkState(self.light_number) == '1'):
+        if(checkState(self.light_number) == True):
             for i in self.pinList:
                 GPIO.output(i, GPIO.LOW)
             GPIO.output(self.pinList[1], GPIO.HIGH)
@@ -107,7 +107,7 @@ class ControlLight:
             #print("Output: Light is still off")
 
     def changeColorBlue(self):
-        if(checkState(self.light_number) == '1'):
+        if(checkState(self.light_number) == True):
             for i in self.pinList:
                 GPIO.output(i, GPIO.LOW)
             GPIO.output(self.pinList[2], GPIO.HIGH)
@@ -124,7 +124,7 @@ class ControlLight:
             #print("Output: Light is still off")
 
     def changeColorWhite(self):
-        if(checkState(self.light_number) == '1'):
+        if(checkState(self.light_number) == True):
             for i in self.pinList:
                 GPIO.output(i, GPIO.LOW)
             GPIO.output(self.pinList[3], GPIO.HIGH)
@@ -157,16 +157,16 @@ def allLightOn():
     for i in light_number:
         old_value = {"lightNumber": i}
         new_value = {"$set": 
-                        {"state": "1", 
+                        {"state": True, 
                          "color": "white", 
                          "startTime": datetime.datetime.now(),
                          "calTime_start": timeit.default_timer()}}
     
         check_light_state = checkState(i)
-        if(check_light_state == '0'):
+        if(check_light_state == False):
             updateOneValue(old_value, new_value)
 
-            new_value = {"$set": {"state": "1", "color": "white"}}
+            new_value = {"$set": {"state": True, "color": "white"}}
             updateOneValueForAppColleciton(old_value, new_value)
 
     print("Output: turn on the light")
@@ -180,7 +180,7 @@ def changeAllColorRed():
     check_light_state = 1
         
     for i in light_number:
-        if(checkState(i) != '1'): #check state of light from database
+        if(checkState(i) != True): #check state of light from database
             check_light_state = 0
 
 
@@ -207,7 +207,7 @@ def changeAllColorGreen():
     check_light_state = 1
 
     for i in light_number:
-        if(checkState(i) != '1'):
+        if(checkState(i) != True):
             check_light_state = 0
         
     if(check_light_state == 1):
@@ -233,7 +233,7 @@ def changeAllColorBlue():
     check_light_state = 1
         
     for i in light_number:
-        if(checkState(i) != '1'):
+        if(checkState(i) != True):
             check_light_state = 0
 
     if(check_light_state == 1):
@@ -263,16 +263,16 @@ def allLightOff():
         update_total_time = (timeit.default_timer() - start) + total_time
         old_value = {"lightNumber": i}
         new_value = {"$set": 
-                        {"state": "0", 
+                        {"state": False, 
                          "color": "off",
                          "endTime": datetime.datetime.now(),
                          "totalTime": update_total_time}}
         
         check_light_state = checkState(i)
-        if(check_light_state == '1'):
+        if(check_light_state == True):
             updateOneValue(old_value, new_value)
 
-            new_value = {"$set": {"state": "0", "color": "white"}}
+            new_value = {"$set": {"state": False, "color": "white"}}
             updateOneValueForAppCollection(old_value, new_value)
 
     print("Output: turn on the light")
