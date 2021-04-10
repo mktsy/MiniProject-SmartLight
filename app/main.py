@@ -1,9 +1,9 @@
 import multiprocessing as mp
 
-from model_speech_recog import(
+from sheet.model_speech_recog import(
     runSpeechRecognition        
 )
-from control_by_app import(
+from sheet.control_by_app import(
     runControlLightByApp
 )
 
