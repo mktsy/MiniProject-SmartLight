@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BCM)
 
 # init list with pin numbers
 
-pinList = [17, 27, 22, 23]
+pinList = [4, 17, 27, 22]
 
 # loop through pins and set mode and state to 'high'
 
@@ -20,16 +20,16 @@ SleepTimeL = 2
 # main loop
 
 try:
-  GPIO.output(17, GPIO.LOW)
+  GPIO.output(4, GPIO.LOW)
   print ("ONE")
   time.sleep(SleepTimeL);
-  GPIO.output(27, GPIO.LOW)
+  GPIO.output(17, GPIO.LOW)
   print ("TWO")
   time.sleep(SleepTimeL);
-  GPIO.output(22, GPIO.LOW)
+  GPIO.output(27, GPIO.LOW)
   print ("THREE")
   time.sleep(SleepTimeL);
-  GPIO.output(23, GPIO.LOW)
+  GPIO.output(22, GPIO.LOW)
   print ("FOUR")
   time.sleep(SleepTimeL);
   GPIO.cleanup()

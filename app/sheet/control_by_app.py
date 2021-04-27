@@ -7,9 +7,7 @@ from database.vault_for_app import(
         checkTimeOnHour,
         checkTimeOnMin,
         checkTimeOffHour,
-        checkTimeOffMin,
-        checkTimeOnState,
-        checkTimeOffState
+        checkTimeOffMin
 )
 from database.vault import(
         checkState
@@ -48,15 +46,15 @@ def runControlLightByApp():
     try:
         while True:
             for i in light_number:
-                if(checkStateApp(i) == True and checkColorApp(i) == 'off'):
+                if(checkStateApp(i) == True and checkColorApp(i) == '#ffffff'):
                     light_list[i-1].lightOn()
-                if(checkColorApp(i) == 'red'):
+                if(checkStateApp(i) == True and checkColorApp(i) == '#ff0000'):
                     light_list[i-1].changeColorRed()
-                if(checkColorApp(i) == 'green'):
+                if(checkStateApp(i) == True and checkColorApp(i) == '#00ff00'):
                     light_list[i-1].changeColorGreen()
-                if(checkColorApp(i) == 'blue'):
+                if(checkStateApp(i) == True and checkColorApp(i) == '#0000ff'):
                     light_list[i-1].changeColorBlue()
-                if(checkColorApp(i) == 'white'):
+                if(checkStateApp(i) == True and checkColorApp(i) == '#ffffff'):
                     light_list[i-1].changeColorWhite()
                 if(checkStateApp(i) == False):
                     light_list[i-1].lightOff()
@@ -78,12 +76,10 @@ def runSetTime():
                 now = datetime.datetime.now()
                 time_now = [now.hour, now.minute]
 
-                if(checkTimeOnState(i) == True):
-                    if(time_on == time_now and checkState(i) == False):
-                        light_list[i-1].lightOn()
-                if(checkTimeOffState(i) == True):
-                    if(time_off == time_now and checkState(i) == True):
-                        light_list[i-1].lightOff()
+                if(time_on == time_now and checkState(i) == False):
+                    light_list[i-1].lightOn()
+                if(time_off == time_now and checkState(i) == True):
+                    light_list[i-1].lightOff()
     
     except KeyboardInterrupt:
         print("Force quit...")
